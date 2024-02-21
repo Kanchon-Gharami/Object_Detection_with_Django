@@ -22,8 +22,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ```bash
 # Clone the Repository
-git clone https://github.com/<your-username>/<your-repo-name>.git
-cd <your-repo-name>
+git clone https://github.com/Kanchon-Gharami/Object_Detection_with_Django
+cd objectDetection
 
 # Set Up a Virtual Environment (optional but recommended)
 python -m venv venv
