@@ -42,3 +42,20 @@ python manage.py migrate
 python manage.py runserver
 
 # Visit http://127.0.0.1:8000/ in your web browser to view the application
+
+
+### Usage
+1. Navigate to the main page of the web application.
+2. Click the "Capture Image" button to take a photo with your webcam.
+3. View the processed image with detected objects and their labels displayed next to the original image.
+4. Detected objects will be listed, providing insights into what the AI model has recognized in your image.
+
+
+### Contributing
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
