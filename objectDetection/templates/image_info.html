@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="text-center mb-4">Object Detection Results</h1>
+
+    <div class="row">
+        <!-- Images Column -->
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h2 class="h5">Original Image</h2>
+                    <img src="{{ original_image.picture.url }}" alt="Original Image" class="img-fluid border rounded">
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h2 class="h5">Processed Image</h2>
+                    <img src="{{ processed_image.processed_picture.url }}" alt="Processed Image" class="img-fluid border rounded">
+                </div>
+            </div>
+        </div>
+
+        <!-- Detected Objects Column -->
+        <div class="col-md-3">
+            {% if detected_objects %}
+                <h2 class="h5">Detected Objects</h2>
+                <ul class="list-group">
+                    {% for obj in detected_objects %}
+                        <li class="list-group-item">{{ obj }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No objects detected.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

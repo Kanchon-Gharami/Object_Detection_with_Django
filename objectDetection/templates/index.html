@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="text-center mb-4">Welcome to the Object Detection Project!</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <video id="webcam" autoplay playsinline class="img-fluid border rounded" style="height: 480px;"></video>
+            <button id="capture" class="btn btn-primary mt-3">Capture Image</button>
+            <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const captureButton = document.getElementById('capture');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        });
+
+    captureButton.addEventListener('click', () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(blob => {
+            const formData = new FormData();
+            formData.append('picture', blob, 'webcam-image.png');
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Image uploaded');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }, 'image/png');
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+
+<script>
+    captureButton.addEventListener('click', () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(blob => {
+            const formData = new FormData();
+            formData.append('picture', blob, 'webcam-image.png');
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            })
+            .then(response => response.json())  // Convert the response to JSON
+            .then(data => {
+                if (data.status === 'success') {
+                    // Redirect if the upload was successful
+                    window.location.href = data.redirect_url;
+                } else {
+                    // Handle failure (show an error message, for example)
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }, 'image/png');
+    });
+</script>
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Upload Status</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Message will be set dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}
