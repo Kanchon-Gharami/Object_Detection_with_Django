@@ -42,7 +42,7 @@ python manage.py migrate
 python manage.py runserver
 
 # Visit http://127.0.0.1:8000/ in your web browser to view the application
-
+```
 
 ### Usage
 1. Navigate to the main page of the web application.
